@@ -8,7 +8,6 @@ import MainLayout from "@/components/MainLayout";
 import { useEffect, useState } from "react";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import InfiniteScroll from "react-infinite-scroll-component";
-import CardLoader from "@/components/CardLoader";
 import LoadingCard from "@/components/LoadingCard";
 import { Transition } from "@headlessui/react";
 
@@ -99,7 +98,7 @@ export default function Home() {
           >
             <section className="grid p-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-10 justify-evenly items-start">
               {briefs.map((brief) => (
-                <BriefCard key={brief.id} brief={brief} loading={loading} />
+                <BriefCard key={brief.id} brief={brief}/>
               ))}
               <Transition
                 appear={true}
