@@ -94,7 +94,7 @@ export default function Home() {
             >
               <section className="grid p-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-10 justify-evenly items-start">
               {briefs.map((brief) => (
-                <BriefCard brief={brief}/>
+                <BriefCard key={brief.id} brief={brief}/>
               ))}
               </section>
             </InfiniteScroll>
