@@ -8,6 +8,9 @@ import MainLayout from "@/components/MainLayout";
 import { useEffect, useState } from "react";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import InfiniteScroll from "react-infinite-scroll-component";
+import CardLoader from "@/components/CardLoader";
+import LoadingCard from "@/components/LoadingCard";
+import { Transition } from "@headlessui/react";
 
 const urbanist = Urbanist({
   display: "swap",
@@ -18,10 +21,11 @@ const urbanist = Urbanist({
 export default function Home() {
   const [briefs, setBriefs] = useState([]);
   const [page, setPage] = useState(0);
-  const [hasMore,setHasMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [loading, setLoading] = useState(true);
   const supabase = createBrowserSupabaseClient();
   async function fetchData() {
-    const { data: cards, error} = await supabase
+    const { data: cards, error } = await supabase
       .from("briefs")
       .select("*")
       .range(page * 3, (page + 1) * 3 - 1);
@@ -29,23 +33,23 @@ export default function Home() {
     if (error) {
       console.error(error);
     } else {
-      console.log(cards)
+      setLoading(false);
+      console.log(cards);
       const count = cards.length;
-      if(count<10) {
-        console.warn("Card length is short")
+      if (count < 10) {
+        console.warn("Card length is short");
         setHasMore(false);
-      }
-      else{
+      } else {
         setHasMore(true);
       }
       setBriefs(cards);
       setPage((prevPage) => prevPage + 1);
-      
     }
   }
 
   async function fetchMoreData() {
-    const { data: cards, error} = await supabase
+    setLoading(true);
+    const { data: cards, error } = await supabase
       .from("briefs")
       .select("*")
       .range(page * 3, (page + 1) * 3 - 1);
@@ -53,18 +57,17 @@ export default function Home() {
     if (error) {
       console.error(error);
     } else {
-      console.log(cards)
+      setLoading(false);
+      console.log(cards);
       const count = cards.length;
-      if(count<10) {
-        console.warn("Card length is short")
+      if (count < 10) {
+        console.warn("Card length is short");
         setHasMore(false);
-      }
-      else{
+      } else {
         setHasMore(true);
       }
       setBriefs((prevData) => [...prevData, ...cards]);
       setPage((prevPage) => prevPage + 1);
-      
     }
   }
 
@@ -84,20 +87,58 @@ export default function Home() {
         <main className="px-6 lg:px-32 py-2 font-urbanist">
           <Navbar />
           <Hero />
-          
-            <InfiniteScroll
-              dataLength={briefs.length}
-              next={fetchMoreData}
-              hasMore={hasMore}
-              loader={<h4>Loading...</h4>}
-              className="w-full"
-            >
-              <section className="grid p-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-10 justify-evenly items-start">
+
+          <InfiniteScroll
+            dataLength={briefs.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={
+              <div className=" mx-auto my-4 font-light text-lg">Loading...</div>
+            }
+            className="w-full"
+          >
+            <section className="grid p-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-10 justify-evenly items-start">
               {briefs.map((brief) => (
-                <BriefCard key={brief.id} brief={brief}/>
+                <BriefCard key={brief.id} brief={brief} loading={loading} />
               ))}
-              </section>
-            </InfiniteScroll>
+              <Transition
+                appear={true}
+                show={loading}
+                enter="transition-all ease-in duration-200"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition-all ease-out duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                {loading && <LoadingCard />}
+              </Transition>
+              <Transition
+                appear={true}
+                show={loading}
+                enter="transition-all ease-in duration-200"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition-all ease-out duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                {loading && <LoadingCard />}
+              </Transition>
+              <Transition
+                appear={true}
+                show={loading}
+                enter="transition-all ease-in duration-200"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition-all ease-out duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                {loading && <LoadingCard className="hidden lg:flex" />}
+              </Transition>
+            </section>
+          </InfiniteScroll>
         </main>
       </MainLayout>
     </>
