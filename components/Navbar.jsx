@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <nav className='flex flex-row py-2 h-24 w-full justify-between items-center'>
         <div className='flex flex-row cursor-pointer'>
-            <Image src={NeoBriefLogo} width={180} height={40} />
+            <Image src={NeoBriefLogo} width={180} height={40} alt="Site Logo" />
         </div>
         <div></div>
     </nav>
