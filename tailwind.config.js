@@ -7,12 +7,20 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundSize: {
+        "size-200": "200% 200%",
+      },
+      backgroundPosition: {
+        "pos-0": "0% 0%",
+        "pos-100": "100% 100%",
+      },
       fontFamily: {
-        urbanist: ['var(--font-urbanist)']
+        urbanist: ["var(--font-urbanist)"],
       },
     },
   },
   plugins: [
-    require('@tailwindcss/typography'),
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/line-clamp"),
   ],
-}
+};

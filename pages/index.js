@@ -2,30 +2,76 @@ import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Head from "next/head";
 import Image from "next/image";
-import {Urbanist} from '@next/font/google'
+import { Urbanist } from "@next/font/google";
 import BriefCard from "@/components/BriefCard";
+import MainLayout from "@/components/MainLayout";
+import { useEffect, useState } from "react";
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-const urbanist = Urbanist({display:'swap',variable:'--font-urbanist',subsets:['latin']})
-
-const Briefs = [
-  {
-    title: "Johnson's Pet Store",
-    description: "Our current website is outdated and does not reflect the high-quality products and services that we offer. We want a new website that is user-friendly and showcases our products and services.",
-    industry: "Retail Business"
-  },
-  {
-    title: "Johnson's Pet Store",
-    description: "Our current website is outdated and does not reflect the high-quality products and services that we offer. We want a new website that is user-friendly and showcases our products and services.",
-    industry: "Retail Business"
-  },
-  {
-    title: "Johnson's Pet Store",
-    description: "Our current website is outdated and does not reflect the high-quality products and services that we offer. We want a new website that is user-friendly and showcases our products and services.",
-    industry: "Retail Business"
-  },
-]
+const urbanist = Urbanist({
+  display: "swap",
+  variable: "--font-urbanist",
+  subsets: ["latin"],
+});
 
 export default function Home() {
+  const [briefs, setBriefs] = useState([]);
+  const [page, setPage] = useState(0);
+  const [hasMore,setHasMore] = useState(false);
+  const supabase = createBrowserSupabaseClient();
+  async function fetchData() {
+    const { data: cards, error} = await supabase
+      .from("briefs")
+      .select("*")
+      .range(page * 3, (page + 1) * 3 - 1);
+
+    if (error) {
+      console.error(error);
+    } else {
+      console.log(cards)
+      const count = cards.length;
+      if(count<10) {
+        console.warn("Card length is short")
+        setHasMore(false);
+      }
+      else{
+        setHasMore(true);
+      }
+      setBriefs(cards);
+      setPage((prevPage) => prevPage + 1);
+      
+    }
+  }
+
+  async function fetchMoreData() {
+    const { data: cards, error} = await supabase
+      .from("briefs")
+      .select("*")
+      .range(page * 3, (page + 1) * 3 - 1);
+
+    if (error) {
+      console.error(error);
+    } else {
+      console.log(cards)
+      const count = cards.length;
+      if(count<10) {
+        console.warn("Card length is short")
+        setHasMore(false);
+      }
+      else{
+        setHasMore(true);
+      }
+      setBriefs((prevData) => [...prevData, ...cards]);
+      setPage((prevPage) => prevPage + 1);
+      
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <Head>
@@ -34,20 +80,26 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${urbanist.variable}`}>
+      <MainLayout>
         <main className="px-6 lg:px-32 py-2 font-urbanist">
-        <Navbar />
-        <Hero />
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-10 justify-evenly items-start">
-            {Briefs && Briefs.map(brief => {
-              return (
-                <BriefCard brief={brief} />
-              )
-            })}
-        </section>
+          <Navbar />
+          <Hero />
+          
+            <InfiniteScroll
+              dataLength={briefs.length}
+              next={fetchMoreData}
+              hasMore={hasMore}
+              loader={<h4>Loading...</h4>}
+              className="w-full"
+            >
+              <section className="grid p-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-10 justify-evenly items-start">
+              {briefs.map((brief) => (
+                <BriefCard brief={brief}/>
+              ))}
+              </section>
+            </InfiniteScroll>
         </main>
-        
-      </main>
+      </MainLayout>
     </>
   );
 }
