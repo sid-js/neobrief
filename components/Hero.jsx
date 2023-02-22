@@ -50,7 +50,7 @@ const Hero = () => {
         </h2>
 
         <p className="max-w-screen-md text-gray-500 md:text-2xl text-center mx-auto">
-          Explore our collection of mock design briefs.
+          Practice with AI Generated Mock Project Briefs
         </p>
         <div className="flex items-center justify-center rounded-xl drop-shadow-lg border-2 border-yellow-300 bg-white py-2 px-2 lg:px-10 mt-4 w-full md:w-4/5 lg:w-3/5 text-2xl">
           <div className="flex flex-row w-full lg:w-full gap-2 justify-center lg:text-xl text-sm">
