@@ -16,7 +16,7 @@ const BriefCard = ({ brief }) => {
     >
       <Link
         href={`/briefs/${brief.id}`}
-        className=" group relative block overflow-hidden rounded-lg border border-gray-100 p-4 sm:p-6 lg:p-8 bg-white drop-shadow-md cursor-pointer hover:scale-105 transition duration-300 hover:bg-slate-50"
+        className=" group relative block overflow-hidden rounded-lg border border-gray-100 py-6 px-4 sm:px-4 lg:px-5 bg-white drop-shadow-md cursor-pointer hover:scale-105 transition duration-300 hover:bg-slate-50"
       >
         <span className="absolute inset-x-0 bottom-0 h-2 transition-all duration-700 bg-gradient-to-tl from-pink-500 via-red-500 to-yellow-400 bg-size-200 bg-pos-0 group-hover:bg-pos-100"></span>
         <div className="flex flex-col gap-3 justify-start items-start">
@@ -26,12 +26,12 @@ const BriefCard = ({ brief }) => {
                 src={NeoBriefIcon}
                 width={75}
                 height={75}
-                className="rounded-md"
+                className="rounded-md w-10 md:w-14"
                 alt={brief.title}
               />
             }
             <div className="flex flex-col justify-center items-start">
-              <h2 className="text-xl font-semibold">{brief.title}</h2>
+              <h2 className="tet-lg md:text-xl font-semibold">{brief.title}</h2>
               <p className="text-md font-normal text-gray-700">
                 {brief.industry}
               </p>

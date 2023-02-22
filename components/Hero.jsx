@@ -21,7 +21,7 @@ const Hero = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt: `Generate a one sentence ${category}  design brief by a fake business name and their industry.`,
+          prompt: `Generate a one sentence ${category}  design brief by a fake randomized unique business name and their industry.`,
         }),
       });
 
@@ -44,7 +44,7 @@ const Hero = () => {
   }
   return (
     <div className="bg-white py-6 sm:py-8 lg:py-12 font-urbanist">
-      <div className="max-w-screen-2xl px-2 md:px-8 mx-auto flex flex-col items-center">
+      <div className="px-2 md:px-8 mx-auto flex flex-col items-center">
         <h2 className="text-gray-90000 text-4xl lg:text-6xl font-bold text-center mb-2 md:mb-3">
           Challenge Your Design Skills
         </h2>
@@ -52,8 +52,8 @@ const Hero = () => {
         <p className="max-w-screen-md text-gray-500 md:text-2xl text-center mx-auto">
           Practice with AI Generated Mock Project Briefs
         </p>
-        <div className="flex items-center justify-center rounded-xl drop-shadow-lg border-2 border-yellow-300 bg-white py-2 px-2 lg:px-10 mt-4 w-full md:w-4/5 lg:w-3/5 text-2xl">
-          <div className="flex flex-row w-full lg:w-full gap-2 justify-center lg:text-xl text-sm">
+        <div className="flex items-center justify-center rounded-xl drop-shadow-lg border-2 border-yellow-300 bg-white py-2 px-4 lg:px-4 mt-4 w-max gap-6 text-2xl">
+          <div className="flex flex-row w-max gap-2 justify-start items-center lg:text-xl text-sm">
             <p className="py-2 bg-transparent focus:outline-none w-max">
               Generate a fake design brief for a
             </p>
@@ -67,15 +67,16 @@ const Hero = () => {
               <option value="Logo">Logo</option>
               <option value="Banner">Banner</option>
             </select>
-            <button
+            
+          </div>
+          <button
               disabled={loading}
-              className="hidden md:flex ml-4  flex-row gap-2 items-center text-yellow-400 rounded-full group hover:text-amber-600"
+              className="hidden md:flex font-medium text-xl px-4 my-2 py-3  flex-row gap-2 items-center justify-center text-white bg-yellow-400 w-max rounded-lg group hover:text-black"
               onClick={runPrompt}
             >
-              <HiBolt className="group-hover:scale-150 transition duration-200" />
+              <HiBolt className="group-hover:scale-150 transition duration-150" />
               Generate with AI
             </button>
-          </div>
         </div>
         <button
           disabled={loading}

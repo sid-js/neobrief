@@ -83,7 +83,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainLayout>
-        <main className="px-6 lg:px-32 py-2 font-urbanist">
+        <main className="px-6 lg:px-12 py-2 font-urbanist">
           <Navbar />
           <Hero />
           <h1 className="font-bold text-3xl px-2 text-center  ">Browse through our pre-generated briefs</h1>
