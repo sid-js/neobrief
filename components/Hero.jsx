@@ -21,7 +21,7 @@ const Hero = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt: `Generate a one sentence fake design brief for a ${category} design`,
+          prompt: `Generate a one sentence ${category}  design brief by a fake business name and their industry.`,
         }),
       });
 
@@ -52,9 +52,9 @@ const Hero = () => {
         <p className="max-w-screen-md text-gray-500 md:text-2xl text-center mx-auto">
           Explore our collection of mock design briefs.
         </p>
-        <div className="flex items-center justify-center rounded-xl drop-shadow-lg border-2 border-yellow-300 bg-white py-2 px-2 lg:px-10 mt-4 w-full text-2xl">
-          <div className="flex flex-row w-full gap-2 justify-center lg:text-xl text-sm">
-            <p className="py-2 bg-transparent focus:outline-none w-max  lg:w-[360px]">
+        <div className="flex items-center justify-center rounded-xl drop-shadow-lg border-2 border-yellow-300 bg-white py-2 px-2 lg:px-10 mt-4 w-full md:w-4/5 lg:w-3/5 text-2xl">
+          <div className="flex flex-row w-full lg:w-full gap-2 justify-center lg:text-xl text-sm">
+            <p className="py-2 bg-transparent focus:outline-none w-max">
               Generate a fake design brief for a
             </p>
             <select
@@ -73,7 +73,7 @@ const Hero = () => {
               onClick={runPrompt}
             >
               <HiBolt className="group-hover:scale-150 transition duration-200" />
-              Generate
+              Generate with AI
             </button>
           </div>
         </div>
@@ -86,11 +86,15 @@ const Hero = () => {
           Generate using AI
         </button>
         {(loading || showResult) && (
-          <div className="bg-white text-xl px-6 py-6 my-4 rounded-lg w-full  font-urbanist font-semibold drop-shadow-lg">
-            {showResult ? (<div>
-              <h1 className="font-bold text-2xl my-2">Generated brief:</h1>
-              <p>{result}</p>
-            </div>) : "Generating Brief.."}
+          <div className="bg-white text-xl px-6 py-6 my-4 rounded-lg w-full md:w-4/5 lg:w-3/5  font-urbanist font-semibold drop-shadow-lg">
+            {showResult ? (
+              <div>
+                <h1 className="font-bold text-2xl my-2">Generated brief:</h1>
+                <p className="font-medium">{result}</p>
+              </div>
+            ) : (
+              "Generating Brief.."
+            )}
           </div>
         )}
       </div>

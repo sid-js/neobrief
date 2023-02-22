@@ -18,18 +18,18 @@ const BriefPage = ({ Brief }) => {
 
   return (
     <MainLayout>
-      <main className="px-6 lg:px-32 py-2 font-urbanist overflow-hidden relative">
+      <main className="px-2 lg:px-32 py-2 font-urbanist overflow-hidden relative">
         <Head>
           <title>{Brief.title}</title>
         </Head>
         <Image src={Background} fill className="object-cover -z-50" alt="Bg" />
 
         <Navbar />
-        <div className="px-28 py-14 w-full flex flex-col gap-4 justify-center items-start">
+        <div className="px-2 lg:px-28 py-2 lg:py-6 w-full flex flex-col gap-4 justify-center items-start">
             <div>
                 <button onClick={()=> {router.back()}} className="px-6 py-1 bg-slate-200 rounded-xl text-black text-xl flex flex-row gap-2 items-center hover:bg-yellow-400 hover:scale-105 transition duration-300"><HiArrowLeft/>Back</button>
             </div>
-          <article className="prose prose-lg font-urbanist p-8 bg-white max-w-max drop-shadow-lg rounded-2xl">
+          <article className="prose prose-base prose-h1:text-3xl lg:prose-h1:text-5xl lg:prose-lg font-urbanist p-8 bg-white max-w-max drop-shadow-lg rounded-2xl">
             <Markup content={Brief.content} />
           </article>
         </div>
