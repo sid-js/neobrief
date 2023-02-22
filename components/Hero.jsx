@@ -3,12 +3,17 @@ import React, { useState } from "react";
 import { HiBolt } from "react-icons/hi2";
 import { polyfill } from "interweave-ssr";
 
-polyfill()
+polyfill();
 
 const Hero = () => {
   const [result, setResult] = useState();
+  const [loading, setLoading] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const [category, setCategory] = useState("Web");
 
   async function runPrompt() {
+    setShowResult(false);
+    setLoading(true);
     try {
       const response = await fetch("/api/generate-brief", {
         method: "POST",
@@ -16,7 +21,7 @@ const Hero = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt: "Generate a very short fake design brief for a Website with random client name and format the text in HTML",
+          prompt: `Generate a one sentence fake design brief for a ${category} design`,
         }),
       });
 
@@ -29,36 +34,42 @@ const Hero = () => {
       }
 
       setResult(data.result);
+      setLoading(false);
+      setShowResult(true);
     } catch (error) {
       // Consider implementing your own error handling logic here
       console.error(error);
+      setResult("Error occured while generating, please try again.");
     }
   }
   return (
     <div className="bg-white py-6 sm:py-8 lg:py-12 font-urbanist">
-      <div className="max-w-screen-2xl px-4 md:px-8 mx-auto flex flex-col items-center">
-        <h2 className="text-gray-90000 text-3xl lg:text-6xl font-bold text-center mb-2 md:mb-3">
+      <div className="max-w-screen-2xl px-2 md:px-8 mx-auto flex flex-col items-center">
+        <h2 className="text-gray-90000 text-4xl lg:text-6xl font-bold text-center mb-2 md:mb-3">
           Challenge Your Design Skills
         </h2>
 
         <p className="max-w-screen-md text-gray-500 md:text-2xl text-center mx-auto">
           Explore our collection of mock design briefs.
         </p>
-        <div className="flex items-center justify-center rounded-xl drop-shadow-lg border-2 border-yellow-300 bg-white p-2 px-10 mt-4 w-max text-2xl">
-          <div className="flex flex-row w-full gap-2 justify-center">
-            <input
-              type="text"
-              value="Generate a fake design brief for a"
-              placeholder="Enter text here"
-              className="py-4 bg-transparent focus:outline-none w-[360px]"
-            />
-            <select className="bg-transparent focus:outline-none font-bold text-black">
-              <option value="option1">Website</option>
-              <option value="option2">Logo</option>
-              <option value="option3">Banner</option>
+        <div className="flex items-center justify-center rounded-xl drop-shadow-lg border-2 border-yellow-300 bg-white py-2 px-2 lg:px-10 mt-4 w-full text-2xl">
+          <div className="flex flex-row w-full gap-2 justify-center lg:text-xl text-sm">
+            <p className="py-2 bg-transparent focus:outline-none w-max  lg:w-[360px]">
+              Generate a fake design brief for a
+            </p>
+            <select
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
+              className="bg-transparent focus:outline-none font-bold text-black"
+            >
+              <option value="Web">Website</option>
+              <option value="Logo">Logo</option>
+              <option value="Banner">Banner</option>
             </select>
             <button
-              className="ml-4 flex flex-row gap-2 items-center text-yellow-400 rounded-full group hover:text-amber-600"
+              disabled={loading}
+              className="hidden md:flex ml-4  flex-row gap-2 items-center text-yellow-400 rounded-full group hover:text-amber-600"
               onClick={runPrompt}
             >
               <HiBolt className="group-hover:scale-150 transition duration-200" />
@@ -66,9 +77,22 @@ const Hero = () => {
             </button>
           </div>
         </div>
-        <div className="bg-white text-xl px-6 py-6 my-4 rounded-lg w-full prose prose-md font-urbanist drop-shadow-lg">
-          {result && <Markup content={result} />}
-        </div>
+        <button
+          disabled={loading}
+          className="flex font-medium text-xl md:hidden my-2 py-3  flex-row gap-2 items-center justify-center bg-yellow-400 w-full rounded-lg group hover:text-amber-600"
+          onClick={runPrompt}
+        >
+          <HiBolt className="group-hover:scale-150 transition duration-200" />
+          Generate using AI
+        </button>
+        {(loading || showResult) && (
+          <div className="bg-white text-xl px-6 py-6 my-4 rounded-lg w-full  font-urbanist font-semibold drop-shadow-lg">
+            {showResult ? (<div>
+              <h1 className="font-bold text-2xl my-2">Generated brief:</h1>
+              <p>{result}</p>
+            </div>) : "Generating Brief.."}
+          </div>
+        )}
       </div>
     </div>
   );
